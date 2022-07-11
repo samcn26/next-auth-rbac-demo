@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  update_at  DateTime? @updatedAt
+  name       String    @unique
+  password   String
+
+  UserRole UserRole[]
+  @@map(name: "user")
+}
+
+model UserRole {
+  id      Int   @id @default(autoincrement())
+  user    User? @relation(fields: [user_id], references: [id])
+  user_id Int
+  role    Role? @relation(fields: [role_id], references: [id])
+  role_id Int
+
+  @@map(name: "user_role")
+}
+
+model Role {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  update_at  DateTime? @updatedAt
+  name       String    @unique
+
+  UserRole UserRole[]
+  RoleMenu RoleMenu[]
+  @@map(name: "role")
+}
+
+model RoleMenu {
+  id      Int   @id @default(autoincrement())
+  role_id Int
+  menu_id Int
+  menu    Menu? @relation(fields: [menu_id], references: [id])
+  role    Role? @relation(fields: [role_id], references: [id])
+
+  @@map(name: "role_menu")
+}
+
+model Menu {
+  id         Int       @id @default(autoincrement())
+  name       String
+  url        String?
+  pid        Int?
+  parent     Menu?     @relation("ParentChildren", fields: [pid], references: [id])
+  children   Menu[]    @relation("ParentChildren")
+  order      Int
+  created_at DateTime  @default(now())
+  update_at  DateTime? @updatedAt
+  // comments are not present of the generated Prisma Client, but are present in the internal Data Model Meta Format (DMMF).
+  note       String? /// specification
+
+  RoleMenu RoleMenu[]
+  @@map(name: "menu")
+}
