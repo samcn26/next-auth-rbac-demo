@@ -13,9 +13,6 @@ init-eslint:
 	npm install --saev-dev eslint
 	npm init @eslint/config
 
-sqlite:
-	npm install sqlite3
-
 init-prisma:
 	npx prisma
 	npx prisma init

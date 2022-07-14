@@ -9,6 +9,7 @@
     display: flex;
     justify-content: right;
     align-items: center;
+    border-bottom: 1px solid #eee;
 }
 
 .layout-head > * {
@@ -21,10 +22,6 @@
     height: calc(100vh - 60px);
 }
 
-.layout-sidebar {
-    /* min-width: 240px;
-    border: 1px solid green; */
-}
 
 .layout-content {
     width: 100%;

@@ -54,21 +54,21 @@ function getUserData(userInfo: any) {
   const { id, name, password, UserRole } = userInfo
   const user = { id, name, password }
   const role: any[] = []
-  const menues: any = {}
+  const menus: any = {}
   UserRole.forEach((r: { role: any }) => {
     const { role: rl } = r
     role.push(rl.name)
 
     rl.RoleMenu.length > 0 &&
       rl.RoleMenu.forEach(({ menu }: any) => {
-        if (!menues[menu.id]) {
-          menues[menu.id] = menu
+        if (!menus[menu.id]) {
+          menus[menu.id] = menu
         }
       })
   })
 
   // sort
-  const menu = sortMenu(Object.values(menues).filter(({ pid }: any) => !pid))
+  const menu = sortMenu(Object.values(menus).filter(({ pid }: any) => !pid))
 
   return {
     user,
@@ -78,9 +78,9 @@ function getUserData(userInfo: any) {
 }
 
 // order is unique
-function sortMenu(menues: any[]) {
-  if (!Array.isArray(menues)) return null
-  return menues
+function sortMenu(menus: any[]) {
+  if (!Array.isArray(menus)) return null
+  return menus
     .reduce((rv, item) => {
       let { key, order, children = [] } = item
       item = {

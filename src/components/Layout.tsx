@@ -4,8 +4,20 @@ import { Button, Menu } from 'antd'
 import styles from '@/src/styles/layout.module.css'
 import { useRouter } from 'next/router'
 import { MenuClickEventHandler } from 'rc-menu/lib/interface'
+import getRoutes from '@/src/routes'
+import { ItemType } from 'antd/lib/menu/hooks/useItems'
+
 export default function Layout({ children }: { children: ReactNode }) {
   const { data: session } = useSession()
+
+  const [items, setItems] = useState<ItemType[]>([])
+
+  useEffect(() => {
+    if (session && Array.isArray(session.menu)) {
+      setItems(getRoutes(session.menu))
+    }
+  }, [session?.menu])
+
   const router = useRouter()
   const [activeKey, setActiveKey] = useState<string[]>([])
   const [openKeys, setOpenKey] = useState<string[]>([])
@@ -22,19 +34,6 @@ export default function Layout({ children }: { children: ReactNode }) {
     router.push(key.slice(0) !== '/' ? '/' + key : key)
   }
 
-  const items = [
-    { label: 'dash', key: 'dash' },
-    { label: 'dev', key: 'dev' },
-    {
-      label: 'settings',
-      key: 'settings',
-      children: [
-        { label: 'user', key: 'settings/user' },
-        { label: 'role', key: 'settings/role' },
-        { label: 'menu', key: 'settings/menu' }
-      ]
-    }
-  ]
   return (
     <div className={styles.layout}>
       <div className={styles['layout-head']}>

@@ -1,4 +1,6 @@
+import { getCombinedURL } from '@/src/utils/apiConfig'
 const apiGet = (url: string, params = {}, config = {}) => {
+  url = getCombinedURL(url)
   const urlInfo = url.split('?')
   let [path, param] = urlInfo
 
@@ -15,13 +17,13 @@ const apiGet = (url: string, params = {}, config = {}) => {
 }
 
 const apiDelete = (url: string, config = {}) =>
-  fetch(url, {
+  fetch(getCombinedURL(url), {
     method: 'DELETE',
     ...config
   }).then((r) => r.json())
 
 const apiPost = (url: string, body: any, config = {}) =>
-  fetch(url, {
+  fetch(getCombinedURL(url), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -32,6 +34,6 @@ const apiPost = (url: string, body: any, config = {}) =>
   }).then((r) => r.json())
 
 const apiPut = (url: string, config = {}) =>
-  fetch(url, { method: 'PUT', ...config }).then((r) => r.json())
+  fetch(getCombinedURL(url), { method: 'PUT', ...config }).then((r) => r.json())
 
 export { apiGet, apiDelete, apiPost, apiPut }
