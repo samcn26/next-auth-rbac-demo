@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -56,11 +56,11 @@ model RoleMenu {
 model Menu {
   id         Int       @id @default(autoincrement())
   name       String
-  url        String?
+  key        String?
   pid        Int?
   parent     Menu?     @relation("ParentChildren", fields: [pid], references: [id])
   children   Menu[]    @relation("ParentChildren")
-  order      Int
+  order      Int       @unique
   created_at DateTime  @default(now())
   update_at  DateTime? @updatedAt
   // comments are not present of the generated Prisma Client, but are present in the internal Data Model Meta Format (DMMF).

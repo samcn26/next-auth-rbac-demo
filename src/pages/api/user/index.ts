@@ -1,8 +1,9 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { User } from '@/lib/db'
-import { validate } from '@/middleware'
-import { userSchema } from '@/schemas'
+import { User } from '@/src/lib/db'
+import { validate } from '@/src/middleware'
+import { userSchema } from '@/src/schemas'
+import { encrypt } from '@/src/utils'
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   switch (req.method) {
@@ -20,11 +21,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   async function post(userInfo: any) {
+    let { password } = userInfo
+    password = encrypt(password)
     const user = await User.create({
-      data: userInfo
+      data: { ...userInfo, password }
     })
     res.status(200).json(user)
   }
 }
 
-export default validate(userSchema, handler)
+export default validate(userSchema, handler, true)

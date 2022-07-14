@@ -1,10 +1,14 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { number, object } from 'yup'
 import { ObjectShape, OptionalObjectSchema } from 'yup/lib/object'
+// eslint-disable-next-line quotes
+import { getToken } from 'next-auth/jwt'
+import { getEnvKey } from '@/src/utils'
 
 export default function validate(
   schema: OptionalObjectSchema<ObjectShape>,
-  handler: NextApiHandler
+  handler: NextApiHandler,
+  securityGard = false
 ) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -25,7 +29,16 @@ export default function validate(
     }
 
     try {
-      await handler(req, res)
+      if (securityGard) {
+        const token = await getToken({ req, secret: getEnvKey('KEY_AUTH') })
+        if (token) {
+          await handler(req, res)
+        } else {
+          res.status(401).json('Unauthorized')
+        }
+      } else {
+        await handler(req, res)
+      }
     } catch (error: any) {
       if (typeof error === 'string') {
         // custom application error

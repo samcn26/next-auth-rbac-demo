@@ -19,6 +19,6 @@ module.exports = {
       'error',
       { anonymous: 'always', named: 'never', asyncArrow: 'always' }
     ],
-    'max-len': ['error', { code: 100, ignoreUrls: true }]
+    'max-len': ['error', { code: 100, ignoreUrls: true, ignoreComments: true }]
   }
 }

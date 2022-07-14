@@ -1,0 +1,34 @@
+.layout {
+    width: 100%;
+    height: 100%;
+}
+
+.layout-head {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.layout-head > * {
+    margin-right: 12px;
+}
+
+
+.layout-main {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.layout-sidebar {
+    /* min-width: 240px;
+    border: 1px solid green; */
+}
+
+.layout-content {
+    width: 100%;
+    height: 100%;
+    background-color: #F2F3F5;
+    padding: 6px;
+}
