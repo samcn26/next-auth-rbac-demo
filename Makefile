@@ -10,7 +10,7 @@
 # 'max-len': ['error', { code: 100, ignoreUrls: true }]
 # }
 init-eslint:
-	npm install --saev-dev eslint
+	npm install --save-dev eslint
 	npm init @eslint/config
 
 init-prisma:
